@@ -678,3 +678,107 @@ font-size:28px;
 }
 
 }
+.github:hover{
+
+background: #24292e;
+box-shadow: 0 0 35px #ffffff;
+}
+/* ========================= */
+/* Contact Cards */
+/* ========================= */
+
+.social-icons{
+
+display:flex;
+
+justify-content:center;
+
+gap:25px;
+
+flex-wrap:wrap;
+
+margin-top:45px;
+
+}
+
+.social-card{
+
+width:150px;
+
+height:150px;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+text-decoration:none;
+
+color:white;
+
+background:rgba(255,255,255,.05);
+
+backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.08);
+
+border-radius:22px;
+
+transition:.4s;
+
+box-shadow:0 0 20px rgba(90,110,255,.25);
+
+}
+
+.social-card i{
+
+font-size:52px;
+
+margin-bottom:18px;
+
+transition:.4s;
+
+}
+
+.social-card span{
+
+font-size:18px;
+
+font-weight:600;
+
+}
+
+.social-card:hover{
+
+transform:translateY(-12px);
+
+box-shadow:0 0 35px #6c7dff;
+
+}
+
+.social-card:hover .fa-whatsapp{
+
+color:#25D366;
+
+}
+
+.social-card:hover .fa-instagram{
+
+color:#E1306C;
+
+}
+
+.social-card:hover .fa-envelope{
+
+color:#4285F4;
+
+}
+
+.social-card:hover .fa-github{
+
+color:#ffffff;
+
+}
