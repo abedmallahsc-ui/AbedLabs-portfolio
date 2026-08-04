@@ -10,62 +10,79 @@ export default async function handler(req, res) {
 
         const { message } = req.body;
 
-        const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    contents: [
-                        {
-                            parts: [
-                                {
-                                    text: `
-You are Abed AI, the official AI assistant of Abed Labs.
+        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
 
-About Abed Labs:
-- We build AI Agents.
-- We develop AI Automation systems.
-- We create Websites.
-- We build Mobile Applications.
-- We develop Custom Software.
-- We help businesses automate their work.
+            method: "POST",
+
+            headers: {
+
+                "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+
+                "Content-Type": "application/json",
+
+                "HTTP-Referer": "https://abedlabs-portfolio.vercel.app",
+
+                "X-Title": "Abed Labs"
+
+            },
+
+            body: JSON.stringify({
+
+                model: "openai/gpt-oss-20b:free",
+
+                messages: [
+
+                    {
+                        role: "system",
+                        content: `You are Abed AI, the official AI assistant for Abed Labs.
+
+Abed Labs specializes in:
+- AI Agents
+- AI Automation
+- Websites
+- Mobile Applications
+- Custom Software
+- Business Automation
 
 Rules:
-- Be professional.
-- Be friendly.
-- Answer briefly unless more detail is requested.
-- If someone asks for pricing, explain that pricing depends on the project and invite them to get in touch.
-- If someone asks something unrelated to Abed Labs, answer normally while remaining polite.
+- Be professional and friendly.
+- Answer clearly.
+- If asked about pricing, explain that pricing depends on the project and encourage the visitor to contact Abed Labs.
+- If asked unrelated questions, answer them politely.`
+                    },
 
-User:
-${message}
-`
-                                }
-                            ]
-                        }
-                    ]
-                })
-            }
-        );
+                    {
+                        role: "user",
+                        content: message
+                    }
+
+                ]
+
+            })
+
+        });
 
         const data = await response.json();
-        console.log(JSON.stringify(data, null, 2));
+
+        if (!response.ok) {
+            console.error(data);
+            return res.status(response.status).json({
+                reply: data.error?.message || "OpenRouter returned an error."
+            });
+        }
 
         const reply =
-            data.candidates?.[0]?.content?.parts?.[0]?.text ||
+            data.choices?.[0]?.message?.content ||
             "Sorry, I couldn't generate a response.";
 
-        res.status(200).json({
-            reply
-        });
+        res.status(200).json({ reply });
 
     } catch (error) {
 
+        console.error(error);
+
         res.status(500).json({
-            error: error.message
+            reply: "Internal server error."
         });
 
     }
