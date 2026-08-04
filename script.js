@@ -170,31 +170,45 @@ closeChat.addEventListener("click", () => {
 
 /* Send Message */
 
-function sendMessage() {
+async function sendMessage() {
 
     const message = userInput.value.trim();
 
-    if(message === "") return;
-
-    // User Message
+    if (message === "") return;
 
     const userDiv = document.createElement("div");
-
     userDiv.className = "user-message";
-
     userDiv.innerHTML = message;
 
     chatMessages.appendChild(userDiv);
 
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-
     userInput.value = "";
 
-    // Typing
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 
     typing.style.display = "block";
 
-    setTimeout(() => {
+    try {
+
+        const response = await fetch("/api/chat", {
+
+            method: "POST",
+
+            headers: {
+
+                "Content-Type": "application/json"
+
+            },
+
+            body: JSON.stringify({
+
+                message
+
+            })
+
+        });
+
+        const data = await response.json();
 
         typing.style.display = "none";
 
@@ -202,13 +216,25 @@ function sendMessage() {
 
         botDiv.className = "bot-message";
 
-        botDiv.innerHTML = getBotResponse(message);
+        botDiv.innerHTML = data.reply;
 
         chatMessages.appendChild(botDiv);
 
         chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    },1200);
+    } catch (error) {
+
+        typing.style.display = "none";
+
+        const botDiv = document.createElement("div");
+
+        botDiv.className = "bot-message";
+
+        botDiv.innerHTML = "❌ Sorry, I couldn't connect to Abed AI.";
+
+        chatMessages.appendChild(botDiv);
+
+    }
 
 }
 
@@ -228,52 +254,3 @@ userInput.addEventListener("keypress",(e)=>{
 /* AI Responses */
 /* ========================= */
 
-function getBotResponse(message){
-
-message = message.toLowerCase();
-
-if(message.includes("price") || message.includes("cost")){
-
-return "💰 Every project is customized. Contact Abed Labs for a free quote based on your requirements.";
-
-}
-
-if(message.includes("website")){
-
-return "🌐 We build modern websites, portfolios, business websites, landing pages and AI-powered web applications.";
-
-}
-
-if(message.includes("ai")){
-
-return "🤖 We develop AI agents, chatbots, automation systems, AI integrations and custom AI software.";
-
-}
-
-if(message.includes("mobile")){
-
-return "📱 We create Android and iOS applications with beautiful UI and powerful backend systems.";
-
-}
-
-if(message.includes("software")){
-
-return "💻 We develop custom software, dashboards, management systems and enterprise solutions.";
-
-}
-
-if(message.includes("project")){
-
-return "🚀 Our featured projects include a School Management Platform, AI Business Automation, AI Content Generator and Portfolio Websites.";
-
-}
-
-if(message.includes("hello") || message.includes("hi")){
-
-return "👋 Hello! Welcome to Abed Labs. How can I help you today?";
-
-}
-
-return "✨ That's a great question! Soon I'll be connected to a real AI model that can answer anything about Abed Labs and our services.";
-
-}
