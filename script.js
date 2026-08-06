@@ -25,9 +25,7 @@ function type() {
     if (charIndex < text[index].length) {
 
         typingElement.innerHTML += text[index].charAt(charIndex);
-
         charIndex++;
-
         setTimeout(type, 80);
 
     } else {
@@ -43,17 +41,13 @@ function erase() {
     if (charIndex > 0) {
 
         typingElement.innerHTML = text[index].substring(0, charIndex - 1);
-
         charIndex--;
-
         setTimeout(erase, 40);
 
     } else {
 
         index++;
-
         if (index >= text.length) index = 0;
-
         setTimeout(type, 400);
 
     }
@@ -62,9 +56,8 @@ function erase() {
 
 type();
 
-
 // ==========================
-// Scroll Reveal Animation
+// Scroll Reveal
 // ==========================
 
 const observer = new IntersectionObserver((entries) => {
@@ -79,42 +72,32 @@ const observer = new IntersectionObserver((entries) => {
 
     });
 
-}, {
-
-    threshold: 0.2
-
-});
+}, { threshold: 0.2 });
 
 document.querySelectorAll(".card").forEach(card => {
 
     card.classList.add("hidden");
-
     observer.observe(card);
 
 });
-
 
 // ==========================
 // Mouse Glow
 // ==========================
 
 const glow = document.createElement("div");
-
 glow.className = "cursor-glow";
-
 document.body.appendChild(glow);
 
 document.addEventListener("mousemove", (e) => {
 
     glow.style.left = e.clientX + "px";
-
     glow.style.top = e.clientY + "px";
 
 });
 
-
 // ==========================
-// Navbar Shadow
+// Navbar
 // ==========================
 
 window.addEventListener("scroll", () => {
@@ -124,21 +107,20 @@ window.addEventListener("scroll", () => {
     if (window.scrollY > 50) {
 
         nav.style.background = "rgba(5,8,22,.85)";
-
         nav.style.boxShadow = "0 0 30px rgba(100,120,255,.3)";
 
     } else {
 
         nav.style.background = "rgba(0,0,0,.25)";
-
         nav.style.boxShadow = "none";
 
     }
 
 });
-/* ========================= */
-/* Floating Chatbot */
-/* ========================= */
+
+// ==========================
+// Chat
+// ==========================
 
 const chatToggle = document.getElementById("chatToggle");
 const chatContainer = document.getElementById("chatContainer");
@@ -147,46 +129,41 @@ const sendBtn = document.getElementById("sendBtn");
 const userInput = document.getElementById("userInput");
 const chatMessages = document.getElementById("chatMessages");
 const typing = document.getElementById("typing");
-let conversationHistory = [];
+const submitProjectBtn = document.getElementById("submitProject");
 
-/* Open Chat */
+let conversationHistory = [];
 
 chatToggle.addEventListener("click", () => {
 
     chatContainer.style.display = "flex";
-
     chatToggle.style.display = "none";
 
 });
 
-/* Close Chat */
-
 closeChat.addEventListener("click", () => {
 
     chatContainer.style.display = "none";
-
     chatToggle.style.display = "flex";
 
 });
 
-/* Send Message */
-
 async function sendMessage() {
 
     const message = userInput.value.trim();
-    conversationHistory.push({ role: "user", content: message });
 
-    if (message === "") return;
+    if (!message) return;
+
+    conversationHistory.push({
+        role: "user",
+        content: message
+    });
 
     const userDiv = document.createElement("div");
     userDiv.className = "user-message";
     userDiv.innerHTML = message;
-
     chatMessages.appendChild(userDiv);
 
     userInput.value = "";
-
-    chatMessages.scrollTop = chatMessages.scrollHeight;
 
     typing.style.display = "block";
 
@@ -204,7 +181,6 @@ async function sendMessage() {
 
             body: JSON.stringify({
 
-                message,
                 history: conversationHistory
 
             })
@@ -216,27 +192,23 @@ async function sendMessage() {
         typing.style.display = "none";
 
         const botDiv = document.createElement("div");
-
         botDiv.className = "bot-message";
-
-        const ready = data.reply.includes("[PROJECT_READY]");
-
-        const cleanReply = data.reply.replace("[PROJECT_READY]", "").trim();
-
-        botDiv.innerHTML = cleanReply;
-
-        const submitBtn = document.getElementById("submitProject");
-
-        if (ready) {
-        submitBtn.style.display = "block";
-}
-        conversationHistory.push({ role: "assistant", content: data.reply });
+        botDiv.innerHTML = data.reply;
 
         chatMessages.appendChild(botDiv);
 
+        conversationHistory.push({
+
+            role: "assistant",
+            content: data.reply
+
+        });
+
         chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    } catch (error) {
+        submitProjectBtn.style.display = "block";
+
+    } catch (err) {
 
         typing.style.display = "none";
 
@@ -244,19 +216,22 @@ async function sendMessage() {
 
         botDiv.className = "bot-message";
 
-        botDiv.innerHTML = "❌ Sorry, I couldn't connect to Abed AI.";
+        botDiv.innerHTML = "❌ Failed to contact Abed AI.";
 
         chatMessages.appendChild(botDiv);
 
     }
 
 }
+// ==========================
+// Events
+// ==========================
 
-sendBtn.addEventListener("click",sendMessage);
+sendBtn.addEventListener("click", sendMessage);
 
-userInput.addEventListener("keypress",(e)=>{
+userInput.addEventListener("keypress", (e) => {
 
-    if(e.key==="Enter"){
+    if (e.key === "Enter") {
 
         sendMessage();
 
@@ -264,29 +239,30 @@ userInput.addEventListener("keypress",(e)=>{
 
 });
 
-        const submitBtn = document.getElementById("submitProject");
+// ==========================
+// Project Modal
+// ==========================
 
-submitBtn.addEventListener("click", async () => {
-
-    alert("🚀 Project submission is coming in the next step!");
-
-});
-        const projectModal = document.getElementById("projectModal");
-const submitProjectBtn = document.getElementById("submitProject");
+const projectModal = document.getElementById("projectModal");
 const closeProjectBtn = document.getElementById("closeProject");
 const sendProjectBtn = document.getElementById("sendProject");
 
 submitProjectBtn.addEventListener("click", () => {
+
     projectModal.style.display = "flex";
+
 });
 
 closeProjectBtn.addEventListener("click", () => {
+
     projectModal.style.display = "none";
+
 });
 
 sendProjectBtn.addEventListener("click", async () => {
 
     const templateParams = {
+
         name: document.getElementById("projectName").value,
         company: document.getElementById("projectCompany").value,
         email: document.getElementById("projectEmail").value,
@@ -295,6 +271,7 @@ sendProjectBtn.addEventListener("click", async () => {
         budget: document.getElementById("projectBudget").value,
         timeline: document.getElementById("projectTimeline").value,
         details: document.getElementById("projectDetails").value
+
     };
 
     try {
@@ -309,6 +286,15 @@ sendProjectBtn.addEventListener("click", async () => {
 
         projectModal.style.display = "none";
 
+        document.getElementById("projectName").value = "";
+        document.getElementById("projectCompany").value = "";
+        document.getElementById("projectEmail").value = "";
+        document.getElementById("projectPhone").value = "";
+        document.getElementById("projectService").value = "";
+        document.getElementById("projectBudget").value = "";
+        document.getElementById("projectTimeline").value = "";
+        document.getElementById("projectDetails").value = "";
+
     } catch (error) {
 
         console.error(error);
@@ -318,8 +304,3 @@ sendProjectBtn.addEventListener("click", async () => {
     }
 
 });
-
-/* ========================= */
-/* AI Responses */
-/* ========================= */
-
