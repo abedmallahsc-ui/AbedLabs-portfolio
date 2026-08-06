@@ -782,3 +782,103 @@ color:#4285F4;
 color:#ffffff;
 
 }
+
+/* ========================= */
+/* Project Request Modal */
+/* ========================= */
+
+.chat-actions{
+    padding:15px;
+    background:#11152d;
+}
+
+#submitProject{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    background:linear-gradient(135deg,#4d6fff,#9b4dff);
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+}
+
+#submitProject:hover{
+    transform:scale(1.02);
+    box-shadow:0 0 20px #6f6cff;
+}
+
+.project-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:10000;
+    backdrop-filter:blur(8px);
+}
+
+.project-box{
+    width:90%;
+    max-width:520px;
+    background:#11152d;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:22px;
+    padding:30px;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    box-shadow:0 0 40px rgba(100,120,255,.35);
+}
+
+.project-box h2{
+    text-align:center;
+    margin-bottom:10px;
+    color:#fff;
+}
+
+.project-box input,
+.project-box textarea{
+    width:100%;
+    padding:14px;
+    border:none;
+    outline:none;
+    border-radius:12px;
+    background:#1c2144;
+    color:white;
+    font-size:15px;
+}
+
+.project-box textarea{
+    resize:none;
+    height:130px;
+}
+
+#sendProject,
+#closeProject{
+    border:none;
+    padding:14px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+}
+
+#sendProject{
+    background:linear-gradient(135deg,#4d6fff,#9b4dff);
+    color:white;
+}
+
+#closeProject{
+    background:#2d335c;
+    color:white;
+}
+
+#sendProject:hover,
+#closeProject:hover{
+    transform:translateY(-2px);
+}
