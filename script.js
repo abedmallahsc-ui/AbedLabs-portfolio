@@ -147,6 +147,7 @@ const sendBtn = document.getElementById("sendBtn");
 const userInput = document.getElementById("userInput");
 const chatMessages = document.getElementById("chatMessages");
 const typing = document.getElementById("typing");
+let conversationHistory = [];
 
 /* Open Chat */
 
@@ -173,6 +174,7 @@ closeChat.addEventListener("click", () => {
 async function sendMessage() {
 
     const message = userInput.value.trim();
+    conversationHistory.push({ role: "user", content: message });
 
     if (message === "") return;
 
@@ -202,7 +204,8 @@ async function sendMessage() {
 
             body: JSON.stringify({
 
-                message
+                message,
+                history: conversationHistory
 
             })
 
@@ -216,7 +219,18 @@ async function sendMessage() {
 
         botDiv.className = "bot-message";
 
-        botDiv.innerHTML = data.reply;
+        const ready = data.reply.includes("[PROJECT_READY]");
+
+        const cleanReply = data.reply.replace("[PROJECT_READY]", "").trim();
+
+        botDiv.innerHTML = cleanReply;
+
+        const submitBtn = document.getElementById("submitProject");
+
+        if (ready) {
+        submitBtn.style.display = "block";
+}
+        conversationHistory.push({ role: "assistant", content: data.reply });
 
         chatMessages.appendChild(botDiv);
 
@@ -245,6 +259,61 @@ userInput.addEventListener("keypress",(e)=>{
     if(e.key==="Enter"){
 
         sendMessage();
+
+    }
+
+});
+
+        const submitBtn = document.getElementById("submitProject");
+
+submitBtn.addEventListener("click", async () => {
+
+    alert("🚀 Project submission is coming in the next step!");
+
+});
+        const projectModal = document.getElementById("projectModal");
+const submitProjectBtn = document.getElementById("submitProject");
+const closeProjectBtn = document.getElementById("closeProject");
+const sendProjectBtn = document.getElementById("sendProject");
+
+submitProjectBtn.addEventListener("click", () => {
+    projectModal.style.display = "flex";
+});
+
+closeProjectBtn.addEventListener("click", () => {
+    projectModal.style.display = "none";
+});
+
+sendProjectBtn.addEventListener("click", async () => {
+
+    const templateParams = {
+        name: document.getElementById("projectName").value,
+        company: document.getElementById("projectCompany").value,
+        email: document.getElementById("projectEmail").value,
+        phone: document.getElementById("projectPhone").value,
+        service: document.getElementById("projectService").value,
+        budget: document.getElementById("projectBudget").value,
+        timeline: document.getElementById("projectTimeline").value,
+        details: document.getElementById("projectDetails").value
+    };
+
+    try {
+
+        await emailjs.send(
+            "service_nh06qrt",
+            "template_f78mftq",
+            templateParams
+        );
+
+        alert("✅ Project request sent successfully!");
+
+        projectModal.style.display = "none";
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("❌ Failed to send project request.");
 
     }
 

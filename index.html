@@ -296,11 +296,46 @@
             ➤
 
         </button>
-
     </div>
 
+    <div class="chat-actions">
+        <button id="submitProject" style="display:none;">🚀Submit Project</button>
+    </div>
+<div id="projectModal" class="project-modal" style="display:none;">
+    <div class="project-box">
+
+        <h2>🚀 Project Request</h2>
+
+        <input id="projectName" placeholder="Your Name">
+
+        <input id="projectCompany" placeholder="Company (Optional)">
+
+        <input id="projectEmail" placeholder="Email">
+
+        <input id="projectPhone" placeholder="Phone">
+
+        <input id="projectService" placeholder="Service Needed">
+
+        <input id="projectBudget" placeholder="Budget">
+
+        <input id="projectTimeline" placeholder="Timeline">
+
+        <textarea id="projectDetails" placeholder="Describe your project"></textarea>
+
+        <button id="sendProject">Send Request</button>
+
+        <button id="closeProject">Cancel</button>
+
+    </div>
 </div>
 <script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+emailjs.init({
+    publicKey: "cAWBSlMh5FQhoAwKB",
+});
+</script>
+
 </body>
 
 </html>

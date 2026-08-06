@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
     try {
 
-        const { message } = req.body;
+        const { history = []} = req.body;
 
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
 
@@ -31,10 +31,9 @@ export default async function handler(req, res) {
                 model: "openai/gpt-oss-20b:free",
 
                 messages: [
-
-                    {
-                        role: "system",
-                        content: `You are Abed AI, the official AI assistant for Abed Labs.
+    {
+        role: "system",
+        content: `You are Abed AI, the official AI assistant for Abed Labs.
 
 Abed Labs specializes in:
 - AI Agents
@@ -44,19 +43,30 @@ Abed Labs specializes in:
 - Custom Software
 - Business Automation
 
-Rules:
-- Be professional and friendly.
-- Answer clearly.
-- If asked about pricing, explain that pricing depends on the project and encourage the visitor to contact Abed Labs.
-- If asked unrelated questions, answer them politely.`
-                    },
+When someone wants a project, naturally collect:
+- Name
+- Company (optional)
+- Email
+- Phone
+- Service needed
+- Budget
+- Timeline
+- Project details
 
-                    {
-                        role: "user",
-                        content: message
-                    }
+Do NOT ask all questions at once.
+Have a natural conversation.
+Remember previous answers.
+If information is already provided, don't ask for it again.
 
-                ]
+When you have enough information, end your reply with exactly:
+
+[PROJECT_READY]
+
+Then continue being professional and friendly.`
+    },
+
+    ...history
+]
 
             })
 
