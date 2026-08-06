@@ -852,9 +852,19 @@ color:#ffffff;
     font-size:15px;
 }
 
-.project-box textarea{
-    resize:none;
-    height:130px;
+.project-box{
+    width:90%;
+    max-width:520px;
+    max-height:90vh;
+    overflow-y:auto;
+    background:#11152d;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:22px;
+    padding:25px;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    box-shadow:0 0 40px rgba(100,120,255,.35);
 }
 
 #sendProject,
@@ -881,4 +891,22 @@ color:#ffffff;
 #sendProject:hover,
 #closeProject:hover{
     transform:translateY(-2px);
+}
+.project-box::-webkit-scrollbar{
+    width:6px;
+}
+
+.project-box::-webkit-scrollbar-thumb{
+    background:#6d7cff;
+    border-radius:10px;
+}
+
+@media (max-width:768px){
+
+    .project-box{
+        width:95%;
+        max-height:85vh;
+        padding:20px;
+    }
+
 }
